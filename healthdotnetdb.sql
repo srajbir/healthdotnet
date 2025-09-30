@@ -2,7 +2,8 @@ DROP DATABASE IF EXISTS healthdotnetdb;
 CREATE DATABASE healthdotnetdb;
 USE healthdotnetdb;
 
--- 1. USERS (patients, doctors, receptionist, admin)
+-- 1. USERS
+DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     role ENUM('admin','doctor','patient','receptionist') NOT NULL,
@@ -17,6 +18,7 @@ CREATE TABLE users (
 );
 
 -- 2. DOCTORS (additional fields for doctors)
+DROP TABLE IF EXISTS doctors;
 CREATE TABLE doctors (
     doctor_id INT PRIMARY KEY,
     speciality VARCHAR(100) NOT NULL,
@@ -25,6 +27,7 @@ CREATE TABLE doctors (
 );
 
 -- 3. APPOINTMENTS
+DROP TABLE IF EXISTS appointments;
 CREATE TABLE appointments (
     appointment_id INT AUTO_INCREMENT PRIMARY KEY,
     patient_id INT NOT NULL,
@@ -38,6 +41,7 @@ CREATE TABLE appointments (
 );
 
 -- 4. REPORTS
+DROP TABLE IF EXISTS reports;
 CREATE TABLE reports (
     report_id INT AUTO_INCREMENT PRIMARY KEY,
     appointment_id INT NOT NULL,
@@ -46,12 +50,13 @@ CREATE TABLE reports (
     diagnosis TEXT,
     prescription_notes TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (appointment_id) REFERENCES appointment(appointment_id),
+    FOREIGN KEY (appointment_id) REFERENCES appointments(appointment_id),
     FOREIGN KEY (doctor_id) REFERENCES users(user_id),
     FOREIGN KEY (patient_id) REFERENCES users(user_id)
 );
 
 -- 5. MEDICINES
+DROP TABLE IF EXISTS medicines;
 CREATE TABLE medicines (
     medicine_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -61,6 +66,7 @@ CREATE TABLE medicines (
 );
 
 -- 6. PRESCRIPTIONS (linking report & medicine)
+DROP TABLE IF EXISTS prescriptions;
 CREATE TABLE prescriptions (
     prescription_id INT AUTO_INCREMENT PRIMARY KEY,
     medicine_id INT NOT NULL,
@@ -68,11 +74,12 @@ CREATE TABLE prescriptions (
     dosage VARCHAR(100),
     duration VARCHAR(50),
     instructions TEXT,
-    FOREIGN KEY (medicine_id) REFERENCES medicine(medicine_id),
-    FOREIGN KEY (report_id) REFERENCES report(report_id)
+    FOREIGN KEY (medicine_id) REFERENCES medicines(medicine_id),
+    FOREIGN KEY (report_id) REFERENCES reports(report_id)
 );
 
 -- 7. PAYMENTS
+DROP TABLE IF EXISTS payments;
 CREATE TABLE payments (
     payment_id INT AUTO_INCREMENT PRIMARY KEY,
     appointment_id INT NOT NULL,
@@ -81,11 +88,12 @@ CREATE TABLE payments (
     transaction_id VARCHAR(100) UNIQUE,
     status ENUM('pending','paid') DEFAULT 'pending',
     payment_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (appointment_id) REFERENCES appointment(appointment_id),
+    FOREIGN KEY (appointment_id) REFERENCES appointments(appointment_id),
     FOREIGN KEY (patient_id) REFERENCES users(user_id)
 );
 
 -- 8. ACTIVITY LOGS
+DROP TABLE IF EXISTS logs;
 CREATE TABLE logs (
     log_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
