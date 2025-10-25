@@ -1,0 +1,70 @@
+*{
+    box-sizing: border-box;
+    margin:0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body{
+    background: #f2f6fc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+.Registration-container{
+    background: #ffffff;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    width:100%;
+    max-width: 400px;
+}
+h2{
+    color: #333;
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.8rem;
+}
+.Registration-form label{
+  display: block;
+  margin-bottom: 8px;
+  color: #555;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.Registration-form input{
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border: 1.8px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+.Registration-form input:focus{
+    border-color: #3f87f5;
+    outline: none;
+    box-shadow: 0 0 6px rgba(63,135,245,0.5);
+}
+
+.btn-submit{
+    width: 100%;
+    padding: 12px 0;
+    background: #3f87f5;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover{
+    background: #306fd3;
+}
+
+
+
