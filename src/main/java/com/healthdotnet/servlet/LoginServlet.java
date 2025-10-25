@@ -7,11 +7,20 @@ import com.healthdotnet.util.DBConnection;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-@WebServlet("/LoginServlet")
+@WebServlet("/login")
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.getRequestDispatcher("/login.jsp").forward(request, response);
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -21,11 +30,11 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         // Basic field validation
-        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
-            request.setAttribute("errorMessage", "Please enter both username and password");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-            return;
-        }
+            if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
+                request.setAttribute("errorMessage", "Please enter both username and password");
+                request.getRequestDispatcher("/login.jsp").forward(request, response);
+                return;
+            }
 
         String sql = "SELECT * FROM users WHERE username = ? AND password = ? AND is_active = TRUE";
 
@@ -84,14 +93,14 @@ public class LoginServlet extends HttpServlet {
 
                 } else {
                     request.setAttribute("errorMessage", "Invalid username or password");
-                    request.getRequestDispatcher("login.jsp").forward(request, response);
+                    request.getRequestDispatcher("/login.jsp").forward(request, response);
                 }
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", "Database error, please try again later.");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
         }
     }
 }

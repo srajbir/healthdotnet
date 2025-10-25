@@ -4,20 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <title>HealthDotNet</title>
-    <link rel="icon" type="image/svg+xml" href="./images/favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="container">
-        <div class="title-container">
-            <img src="./images/favicon.svg" alt="HealthDotNet Logo">
-            <h1>HealthDotNet</h1>
-        </div>
+        <%@ include file="WEB-INF/views/header.jsp" %>
 
-        <p class="sub-title">Hospital Management System</p>
+        <p><strong class="sub-title">Login to HealthDotNet</strong></p>
 
-        <form action="LoginServlet" method="post">
+        <form action="login" method="post">
             <label for="username" class="lbl">Username:</label>
             <input type="text" name="username" placeholder="Enter your username" class="input-text">
             
@@ -37,14 +34,11 @@
         </form>
 
         <p class="message">
-            Forgot your username / password? <a href="reset_data.jsp">Reset Password</a><br>
-            Don't have an account? <a href="register.jsp">Register</a>
+            Forgot your username / password? <a href="forgot" class="link">Reset Password</a><br>
+            Don't have an account? <a href="register" class="link">Register</a>
         </p>
 
-        <div class="footer">
-            <p>Managed by <strong>Rajbir Singh</strong> & <strong>Rohit Chand</strong></p>
-            <p>&copy; <%= java.time.Year.now() %> HealthDotNet</p>
-        </div>
+    <%@ include file="WEB-INF/views/footer.jsp" %>
     </div>
 </body>
 </html>

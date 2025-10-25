@@ -3,7 +3,7 @@ body {
     padding: 0;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #e0f7fa, #e8f5e9);
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,12 +17,22 @@ body {
     text-align: center;
     border-radius: 15px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    margin: 20px 0;
+}
+
+.header {
+    border-bottom: #00796b2a 1px solid;
+    margin-bottom: 30px;
 }
 
 .message {
     color: #555;
     font-size: 1rem; /* 16px */
     display: inline-block;
+}
+
+a {
+    text-decoration: none;
 }
 
 .btn {
@@ -79,11 +89,11 @@ body {
     transform-origin: center;
 }
 
-.title-container:hover h1 {
+.title-container:hover .title {
     text-shadow: 0 0 10px #00796b1a;
 }
 
-.title-container h1 {
+.title {
     margin: 0;
     color: #00796b;
     font-size: 2.5rem; /* 40px */
@@ -91,12 +101,11 @@ body {
 }
 
 .sub-title {
-    color: #555;
-    margin-bottom: 30px;
+    color: #00796b;
     font-size: 1.02rem; /* 19.2px */
 }
 
-a {
+.link {
     color: #00796b;
     font-size: 1rem; /* 16px */
     text-decoration: none;
@@ -104,7 +113,7 @@ a {
     display: inline-block;
 }
 
-a:hover {
+.link:hover {
     text-decoration: underline;
 }
 
@@ -135,6 +144,7 @@ a:hover {
 .input-text:focus {
     border-color: #00796b;
     outline: none;
+    box-shadow: 0 0 8px #00796b44;
 }
 
 .error {
@@ -162,7 +172,7 @@ a:hover {
         border-radius: 10px;
     }
 
-    .title-container h1 {
+    .title {
         font-size: 2rem; /* 32px */
     }
 
