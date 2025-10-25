@@ -17,13 +17,29 @@
 
         <p class="sub-title">Hospital Management System</p>
 
-        <form action="login.jsp" method="get">
+        <form action="LoginServlet" method="post">
+            <label for="username" class="lbl">Username:</label>
+            <input type="text" name="username" placeholder="Enter your username" class="input-text">
+            
+            <label for="password" class="lbl">Password:</label>
+            <input type="password" name="password" placeholder="Enter your password" class="input-text">
+
+            <%
+                String errorMessage = (String) request.getAttribute("errorMessage");
+                if (errorMessage != null && !errorMessage.isEmpty()) {
+            %>
+                <div class="error"><%= errorMessage %></div>
+            <%
+                }
+            %>
+
             <button type="submit" class="btn">Login</button>
         </form>
 
-        <form action="register.jsp" method="get">
-            <button type="submit" class="btn">Register</button>
-        </form>
+        <p class="message">
+            Forgot your username / password? <a href="reset_data.jsp">Reset Password</a><br>
+            Don't have an account? <a href="register.jsp">Register</a>
+        </p>
 
         <div class="footer">
             <p>Managed by <strong>Rajbir Singh</strong> & <strong>Rohit Chand</strong></p>
