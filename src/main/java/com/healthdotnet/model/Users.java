@@ -2,7 +2,7 @@ package com.healthdotnet.model;
 import java.time.LocalDate;
 
 public class Users {
-    private enum Role {
+    public static enum Role {
         ADMIN,
         DOCTOR,
         PATIENT,

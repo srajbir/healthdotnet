@@ -19,9 +19,10 @@ body {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
-p {
+.message {
     color: #555;
-    margin-bottom: 30px;
+    font-size: 1rem; /* 16px */
+    display: inline-block;
 }
 
 .btn {
@@ -29,7 +30,7 @@ p {
     width: 100%;
     padding: 12px 0;
     margin: 10px 0;
-    font-size: 16px;
+    font-size: 1rem; /* 16px */
     font-weight: 600;
     color: #00796b;
     background: white;
@@ -48,9 +49,15 @@ p {
     transform: scale(0.98);
 }
 
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 .footer {
-    margin-top: 20px;
-    font-size: 14px;
+    border-top: #00796b2a 1px solid;
+    margin-top: 30px;
+    font-size: 0.875rem; /* 14px */
     color: #777;
 }
 
@@ -79,8 +86,60 @@ p {
 .title-container h1 {
     margin: 0;
     color: #00796b;
-    font-size: 2.5rem;
+    font-size: 2.5rem; /* 40px */
     font-weight: 700;
+}
+
+.sub-title {
+    color: #555;
+    margin-bottom: 30px;
+    font-size: 1.02rem; /* 19.2px */
+}
+
+a {
+    color: #00796b;
+    font-size: 1rem; /* 16px */
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-block;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.lbl {
+    display: block;
+    text-align: left;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #00796b;
+    font-size: 0.95rem; /* 15.2px */
+}
+
+.input-text {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 2px solid #00796b99;
+    color: #00796b;
+    border-radius: 5px;
+    font-size: 1rem; /* 16px */
+    box-sizing: border-box;
+}
+
+::placeholder {
+    color: #00796b65;
+}
+
+.input-text:focus {
+    border-color: #00796b;
+    outline: none;
+}
+
+.error {
+    color: #d62828;
+    font-size: 1rem;
 }
 
 @keyframes spin {
@@ -104,27 +163,26 @@ p {
     }
 
     .title-container h1 {
-        font-size: 2rem;
-    }
-    .title-container img {
-        width: 24px;
-        height: 24px;
-        margin-right: 8px;
+        font-size: 2rem; /* 32px */
     }
 
-    p {
+    .message {
         font-size: 0.95rem;
-        margin-bottom: 20px;
     }
 
     .btn {
-        font-size: 15px;
-        padding: 10px 0;
-        margin: 8px 0;
+        font-size: 0.9375rem; /* 15px */
     }
 
     .footer {
-        font-size: 12px;
-        margin-top: 15px;
+        font-size: 0.75rem; /* 12px */
+    }
+
+    .sub-title {
+        font-size: 0.95rem; /* 16px */
+    }
+
+    .lbl {
+        font-size: 0.875rem; /* 14px */
     }
 }
