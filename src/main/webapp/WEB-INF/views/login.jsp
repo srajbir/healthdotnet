@@ -40,5 +40,21 @@
 
     <%@ include file="footer.jsp" %>
     </div>
+
+    <%
+        String successMessage = (String) session.getAttribute("successMessage");
+        if (successMessage != null && !successMessage.isEmpty()) { 
+            session.removeAttribute("successMessage");  
+    %> 
+        <div class="modal" id="modal">
+            <div class="container">
+                <p class="success"><%= successMessage %></p>
+                <p class="message">Please Log in to your account.</p>
+                <button class="btn" onclick="document.getElementById('modal').style.display='none'">
+                    Close
+                </button>
+            </div>
+        </div>
+    <% } %>
 </body>
 </html>
