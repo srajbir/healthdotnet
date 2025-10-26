@@ -15,11 +15,12 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/register.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/views/404.jsp").forward(request, response);
     }
 }

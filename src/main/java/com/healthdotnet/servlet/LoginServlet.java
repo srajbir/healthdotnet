@@ -19,7 +19,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/login.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
         // Basic field validation
             if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
                 request.setAttribute("errorMessage", "Please enter both username and password");
-                request.getRequestDispatcher("/login.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
                 return;
             }
 
@@ -93,14 +93,14 @@ public class LoginServlet extends HttpServlet {
 
                 } else {
                     request.setAttribute("errorMessage", "Invalid username or password");
-                    request.getRequestDispatcher("/login.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
                 }
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", "Database error, please try again later.");
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
         }
     }
 }

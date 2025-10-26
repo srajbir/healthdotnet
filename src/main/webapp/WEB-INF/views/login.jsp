@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <title>HealthDotNet</title>
-    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="${pageContext.request.contextPath}/images/favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
     <div class="container">
-        <%@ include file="WEB-INF/views/header.jsp" %>
+        <%@ include file="header.jsp" %>
 
         <p><strong class="sub-title">Login to HealthDotNet</strong></p>
 
@@ -38,7 +38,7 @@
             Don't have an account? <a href="register" class="link">Register</a>
         </p>
 
-    <%@ include file="WEB-INF/views/footer.jsp" %>
+    <%@ include file="footer.jsp" %>
     </div>
 </body>
 </html>
