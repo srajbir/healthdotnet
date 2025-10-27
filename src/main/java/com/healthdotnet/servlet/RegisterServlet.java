@@ -228,15 +228,17 @@ public class RegisterServlet extends HttpServlet {
                 ps.executeUpdate();
             }
 
-            // Set success message in session (flash) and PRG redirect to /register?status=success
+            // Set success message in session
             HttpSession session = request.getSession();
             session.setAttribute("successMessage", "Registration successful!");
-            // Redirect to GET /register so the page can be shown via GET (PRG)
+            // Redirect to /login page after successful registration
             response.sendRedirect(request.getContextPath() + "/login");
             return;
 
         } catch (SQLException e) {
-            throw new ServletException("Database error during registration", e);
+            request.setAttribute("dbError", "An error occurred while processing your registration. Please try again later.");
+            request.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(request, response);
+            return;
         }
     }
 }
