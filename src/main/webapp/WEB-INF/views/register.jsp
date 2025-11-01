@@ -105,6 +105,11 @@
             <% } %>
         </form>
 
+        <p class="message">
+            
+            Already have an account? <a href="login" class="link">Login</a>
+        </p>
+
         <%@ include file="footer.jsp" %>
     </div>
     <script>
