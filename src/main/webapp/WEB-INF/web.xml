@@ -12,14 +12,4 @@
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
 
-  <!-- Forgot Password Servlet Mapping -->
-  <servlet>
-    <servlet-name>ForgotPasswordServlet</servlet-name>
-    <servlet-class>com.healthdotnet.servlet.ForgotPasswordServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ForgotPasswordServlet</servlet-name>
-    <url-pattern>/forgot</url-pattern>
-  </servlet-mapping>
-
 </web-app>

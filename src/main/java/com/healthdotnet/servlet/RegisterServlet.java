@@ -113,7 +113,7 @@ public class RegisterServlet extends HttpServlet {
         if (contact == null || contact.trim().isEmpty()) {
             request.setAttribute("contactError", "Contact number is required.");
             hasError = true;
-        } else if (!contact.matches("^\\+?[0-9]{7,15}$")) {
+        } else if (!contact.matches("^\\d{10}$")) {
             request.setAttribute("contactError", "Please enter a valid contact number.");
             hasError = true;
         }
@@ -201,7 +201,7 @@ public class RegisterServlet extends HttpServlet {
             // Date validation
             LocalDate dateOfBirth = newUser.getDob();
             if (dateOfBirth != null && dateOfBirth.isAfter(LocalDate.now())) {
-                request.setAttribute("dateError", "Date of birth cannot be in the future.");
+                request.setAttribute("dobError", "Date of birth cannot be in the future.");
                 request.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(request, response);
                 return;
             }
@@ -219,7 +219,7 @@ public class RegisterServlet extends HttpServlet {
                 ps.setString(1, newUser.getRole().name());
                 ps.setString(2, newUser.getFullName());
                 ps.setString(3, newUser.getUsername());
-                ps.setString(4, newUser.getPassword()); // plain text; use hashing in production
+                ps.setString(4, newUser.getPassword());
                 ps.setString(5, newUser.getEmail());
                 ps.setString(6, newUser.getContactNumber());
                 ps.setDate(7, Date.valueOf(newUser.getDob()));

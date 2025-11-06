@@ -7,12 +7,13 @@
     <link rel="icon" type="image/svg+xml" href="${pageContext.request.contextPath}/images/favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <script src="${pageContext.request.contextPath}/js/main.js"></script>
 </head>
 <body>
     <div class="container">
         <%@ include file="header.jsp" %>
 
-        <p><strong class="sub-title">Login to HealthDotNet</strong></p>
+        <p class="sub-title"><strong>Login to HealthDotNet</strong></p>
 
         <form action="login" method="post">
             <label for="username" class="lbl">Username:</label>
@@ -21,6 +22,7 @@
             <label for="password" class="lbl">Password:</label>
             <input type="password" name="password" placeholder="Enter your password" class="input-text">
 
+            <button type="submit" class="btn">Login</button>
             <%
                 String errorMessage = (String) request.getAttribute("errorMessage");
                 if (errorMessage != null && !errorMessage.isEmpty()) {
@@ -30,11 +32,10 @@
                 }
             %>
 
-            <button type="submit" class="btn">Login</button>
         </form>
 
         <p class="message">
-            Forgot your username / password? <a href="forgot" class="link">Reset Password</a><br>
+            Forgot your <a href="forgot-username" class="link">Username</a> | <a href="forgot-password" class="link">Password</a>?<br>
             Don't have an account? <a href="register" class="link">Register</a>
         </p>
 
@@ -49,7 +50,15 @@
         <div class="modal" id="modal">
             <div class="container">
                 <p class="success"><%= successMessage %></p>
-                <p class="message">Please Log in to your account.</p>
+
+                <% 
+                    String username = (String) session.getAttribute("username");
+                    if (username != null && !username.isEmpty()) {
+                %>
+                    <p class="message">Username: <strong><%= username %></strong></p>
+                <% } %>
+
+                <p class="message">Please Log into your account.</p>
                 <button class="btn" onclick="document.getElementById('modal').style.display='none'">
                     Close
                 </button>

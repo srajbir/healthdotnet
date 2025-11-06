@@ -7,18 +7,19 @@
     <link rel="icon" type="image/svg+xml" href="${pageContext.request.contextPath}/images/favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <script src="${pageContext.request.contextPath}/js/main.js"></script>
 </head>
 <body>
     <div class="container">
         <%@ include file="header.jsp" %>
 
-        <p><strong class="sub-title">Register to HealthDotNet</strong></p>
+        <p class="sub-title"><strong>Register to HealthDotNet</strong></p>
 
         <form method="post" action="register">
             <!-- Full Name -->
             <label for="fullname" class="lbl">Full Name</label>
             <input class="input-text" type="text" id="fullname" name="fullname"
-                   value="<%= request.getAttribute("fullname") != null ? request.getAttribute("fullname") : "" %>"
+                   value='<%= request.getAttribute("fullname") != null ? request.getAttribute("fullname") : "" %>'
                    placeholder="Enter your full name">
             <%
                 String fullnameError = (String) request.getAttribute("fullnameError");
@@ -30,7 +31,7 @@
             <!-- Username -->
             <label for="username" class="lbl">Username</label>
             <input class="input-text" type="text" id="username" name="username"
-                   value="<%= request.getAttribute("username") != null ? request.getAttribute("username") : "" %>"
+                   value='<%= request.getAttribute("username") != null ? request.getAttribute("username") : "" %>'
                    placeholder="Enter your username">
             <%
                 String usernameError = (String) request.getAttribute("usernameError");
@@ -63,7 +64,7 @@
             <!-- Email -->
             <label for="email" class="lbl">Email</label>
             <input class="input-text" type="email" id="email" name="email"
-                   value="<%= request.getAttribute("email") != null ? request.getAttribute("email") : "" %>"
+                   value='<%= request.getAttribute("email") != null ? request.getAttribute("email") : "" %>'
                    placeholder="Enter your email">
             <%
                 String emailError = (String) request.getAttribute("emailError");
@@ -75,7 +76,7 @@
             <!-- Contact -->
             <label for="contact" class="lbl">Contact</label>
             <input class="input-text" type="tel" id="contact" name="contact"
-                   value="<%= request.getAttribute("contact") != null ? request.getAttribute("contact") : "" %>"
+                   value='<%= request.getAttribute("contact") != null ? request.getAttribute("contact") : "" %>'
                    placeholder="Enter your contact number">
             <%
                 String contactError = (String) request.getAttribute("contactError");
@@ -87,7 +88,7 @@
             <!-- Date of Birth -->
             <label for="dateOfBirth" class="lbl">Date of Birth</label>
             <input class="input-text" type="date" id="dateOfBirth" name="dateOfBirth"
-                   value="<%= request.getAttribute("dateOfBirth") != null ? request.getAttribute("dateOfBirth") : "" %>">
+                   value='<%= request.getAttribute("dateOfBirth") != null ? request.getAttribute("dateOfBirth") : "" %>'>
             <%
                 String dobError = (String) request.getAttribute("dobError");
                 if (dobError != null && !dobError.isEmpty()) {
@@ -106,19 +107,10 @@
         </form>
 
         <p class="message">
-            
             Already have an account? <a href="login" class="link">Login</a>
         </p>
 
         <%@ include file="footer.jsp" %>
     </div>
-    <script>
-        window.onload = function() {
-            if (performance.navigation.type === 2) { // type 2 = back/forward
-                var form = document.querySelector('form');
-                if (form) form.reset();
-            }
-        };
-    </script>
 </body>
 </html>
