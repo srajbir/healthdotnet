@@ -14,7 +14,9 @@
 
         <h1 class="sub-title">404 - Page Not Found</h1>
         <p class="message">We couldn't find what you were looking for.</p>
-        <a href="${pageContext.request.contextPath}/" class="link">Go Back Home</a>
+        <form action="${pageContext.request.contextPath}/" method="get">
+            <button type="submit" class="btn">Go Back Home</button>
+        </form>
 
         <%@ include file="footer.jsp" %>
     </div>
