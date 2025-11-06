@@ -13,7 +13,7 @@
     <div class="container">
         <%@ include file="header.jsp" %>
        <p class="sub-title"><strong>Forgot Username</strong></p>
-        <form method="post" action="${pageContext.request.contextPath}/forgot">
+        <form method="post" action="${pageContext.request.contextPath}/forgot-username">
            <label for="fullname" class="lbl">Full Name</label>
            <input type="text" id="fullname" name="fullname" class="input-text" placeholder="Enter your full name">
 

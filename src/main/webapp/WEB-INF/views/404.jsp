@@ -13,10 +13,8 @@
         <%@ include file="header.jsp" %>
 
         <h1 class="sub-title">404 - Page Not Found</h1>
-        <p class="message">Sorry, the page you are looking for does not exist.</p>
-        <form action="${pageContext.request.contextPath}/" method="get">
-            <button type="submit" class="btn">Go to Login Page</button>
-        </form>
+        <p class="message">We couldn't find what you were looking for.</p>
+        <a href="${pageContext.request.contextPath}/" class="link">Go Back Home</a>
 
         <%@ include file="footer.jsp" %>
     </div>

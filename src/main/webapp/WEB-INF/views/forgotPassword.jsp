@@ -13,7 +13,7 @@
     <div class="container">
         <%@ include file="header.jsp" %>
        <p class="sub-title"><strong>Reset Password</strong></p>
-        <form method="post" action="${pageContext.request.contextPath}/forgot">
+        <form method="post" action="${pageContext.request.contextPath}/forgot-password">
             <!-- Input Fields -->
             <label for="username" class="lbl">Username</label>
             <input type="text" id="username" name="username" class="input-text" placeholder="Enter your username"
