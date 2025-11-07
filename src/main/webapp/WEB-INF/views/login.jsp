@@ -1,4 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
+response.setHeader("Pragma", "no-cache"); // HTTP 1.0
+response.setDateHeader("Expires", 0); // Proxies
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,8 +60,9 @@
                 <% 
                     String username = (String) session.getAttribute("username");
                     if (username != null && !username.isEmpty()) {
+                        session.removeAttribute("username");
                 %>
-                    <p class="message">Username: <strong><%= username %></strong></p>
+                    <p class="message">Username: <strong><%= username %></strong></p><br>
                 <% } %>
 
                 <p class="message">Please Log into your account.</p>

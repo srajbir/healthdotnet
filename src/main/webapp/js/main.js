@@ -1,6 +1,12 @@
 window.addEventListener('pageshow', (event) => {
+  const form = document.querySelector('form');
+  if (!form) return;
+
+  // Always reset on back-forward cache restore
   if (event.persisted) {
-    const form = document.querySelector('form');
-    if (form) form.reset();
+    form.reset();
+  } else {
+    // Also reset if reloaded normally
+    form.reset();
   }
 });
