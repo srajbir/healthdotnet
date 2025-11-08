@@ -84,6 +84,48 @@ a {
     margin-right: 10px;
 }
 
+hr {
+    border: none;
+    height: 2px;
+    background-color: #00796b2a;
+    margin: 20px 0;
+}
+
+.bar-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Logout link on the right */
+.logout-link {
+    position: absolute;
+    right: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Logout icon styling */
+.logout-link img {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.2s ease;
+    cursor: pointer;
+}
+
+/* On hover - slight enlarge */
+.logout-link:hover img {
+    transform: scale(1.05);
+}
+
+/* On active (click) - smooth rotate animation */
+.logout-link:active img {
+    transform: rotate(-20deg) scale(0.9);
+}
+
+
 .title-container:hover img {
     animation: spin 2s linear infinite;
     transform-origin: center;
@@ -150,6 +192,7 @@ a {
 .error {
     color: #d62828;
     font-size: 1rem;
+    margin-bottom: 10px;
 }
 
 .success {

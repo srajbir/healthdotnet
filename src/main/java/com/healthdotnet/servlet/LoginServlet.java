@@ -2,7 +2,6 @@ package com.healthdotnet.servlet;
 
 import java.io.IOException;
 import java.sql.*;
-import com.healthdotnet.model.Users;
 import com.healthdotnet.util.DBConnection;
 
 import javax.servlet.ServletException;
@@ -36,7 +35,7 @@ public class LoginServlet extends HttpServlet {
                 return;
             }
 
-        String sql = "SELECT * FROM users WHERE username = ? AND password = ? AND is_active = TRUE";
+        String sql = "SELECT user_id, role FROM users WHERE username = ? AND password = ? AND is_active = TRUE";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -46,48 +45,39 @@ public class LoginServlet extends HttpServlet {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    // Create user object
-                    Users user = new Users();
-                    user.setUserId(rs.getInt("user_id"));
-                    user.setFullName(rs.getString("full_name"));
-                    user.setUsername(rs.getString("username"));
-                    user.setPassword(rs.getString("password"));
-                    user.setEmail(rs.getString("email"));
-                    user.setContactNumber(rs.getString("phone"));
-                    user.setIsActive(rs.getBoolean("is_active"));
+                    // User data
+                    String userId = rs.getString("user_id");
+                    String role = rs.getString("role");
 
-                    Date dob = rs.getDate("date_of_birth");
-                    if (dob != null) user.setDob(dob.toLocalDate());
-
-                    Timestamp created = rs.getTimestamp("created_at");
-                    if (created != null) user.setCreatedAt(created.toLocalDateTime().toLocalDate());
-
-                    String roleStr = rs.getString("role");
-                    if (roleStr != null) {
-                        user.setRole(Users.Role.valueOf(roleStr.toUpperCase()));
+                    // Invalidate old session if any
+                    HttpSession oldSession = request.getSession(false);
+                    if (oldSession != null) {
+                        oldSession.invalidate();
                     }
 
-                    // Store user in session
-                    HttpSession session = request.getSession();
-                    session.setAttribute("loggedInUser", user);
-                    session.setMaxInactiveInterval(30 * 60); // 30 mins
+                    // Create a new session
+                    HttpSession newSession = request.getSession(true);
+                    newSession.setAttribute("user_id", userId);
+                    newSession.setAttribute("role", role);
+                    newSession.setMaxInactiveInterval(60 * 60); // 60 mins
 
                     // Role-based redirection
-                    switch (roleStr.toLowerCase()) {
+                    switch (role.toLowerCase()) {
                         case "admin":
-                            response.sendRedirect("admin-dashboard.jsp");
+                            response.sendRedirect(request.getContextPath() + "/admin-dashboard");
                             break;
                         case "doctor":
-                            response.sendRedirect("doctor-dashboard.jsp");
+                            response.sendRedirect(request.getContextPath() + "/doctor-dashboard");
                             break;
                         case "receptionist":
-                            response.sendRedirect("receptionist-dashboard.jsp");
+                            response.sendRedirect(request.getContextPath() + "/receptionist-dashboard");
                             break;
                         case "patient":
-                            response.sendRedirect("patient-dashboard.jsp");
+                            response.sendRedirect(request.getContextPath() + "/patient-dashboard");
                             break;
                         default:
-                            response.sendRedirect("index.jsp");
+                            response.sendRedirect(request.getContextPath() + "/login");
+                            // response.sendRedirect(request.getContextPath() + "/profile"); // for testing profile page, disable all cases except default
                             break;
                     }
 
