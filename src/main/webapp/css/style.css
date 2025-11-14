@@ -75,7 +75,6 @@ a {
     display: flex;
     align-items: baseline;
     justify-content: center;
-    margin-bottom: 20px;
 }
 
 .title-container img {
@@ -96,35 +95,34 @@ hr {
     align-items: center;
     justify-content: center;
     position: relative;
+    margin-bottom: 30px;
+    border-top: #00796b 1px solid;
+    border-bottom: #00796b 1px solid;
+    background-color: #00796b01;
+    border-radius: 10px;
 }
 
-/* Logout link on the right */
-.logout-link {
+.sub-title-logo {
     position: absolute;
-    right: 0px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* Logout icon styling */
-.logout-link img {
+.sub-title-logo img {
     width: 24px;
     height: 24px;
     transition: transform 0.2s ease;
     cursor: pointer;
 }
 
-/* On hover - slight enlarge */
-.logout-link:hover img {
+.sub-title-logo:hover img {
     transform: scale(1.05);
 }
 
-/* On active (click) - smooth rotate animation */
-.logout-link:active img {
+.sub-title-logo:active img {
     transform: rotate(-20deg) scale(0.9);
 }
-
 
 .title-container:hover img {
     animation: spin 2s linear infinite;
@@ -210,6 +208,28 @@ hr {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+/*  Dashboard Navigation Styles */
+.dashboard-nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f6fffd;
+    margin: 12px 0;
+    padding: 12px 15px;
+    text-decoration: none;
+    border-radius: 10px;
+    color: #03856f;
+    font-size: 15px;
+    font-weight: 500;
+    border: 1px solid #e0f5f2;
+    transition: 0.2s ease;
+}
+
+.dashboard-nav a:hover {
+    background: #e0faf4;
+    transform: translateX(5px);
 }
 
 @keyframes spin {

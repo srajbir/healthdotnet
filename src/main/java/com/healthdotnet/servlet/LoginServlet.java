@@ -18,6 +18,13 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        // Invalidate old session if any
+        HttpSession oldSession = request.getSession(false);
+        if (oldSession != null) {
+            oldSession.invalidate();
+        }
+        
         request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
     }
 
@@ -61,25 +68,7 @@ public class LoginServlet extends HttpServlet {
                     newSession.setAttribute("role", role);
                     newSession.setMaxInactiveInterval(60 * 60); // 60 mins
 
-                    // Role-based redirection
-                    switch (role.toLowerCase()) {
-                        case "admin":
-                            response.sendRedirect(request.getContextPath() + "/admin-dashboard");
-                            break;
-                        case "doctor":
-                            response.sendRedirect(request.getContextPath() + "/doctor-dashboard");
-                            break;
-                        case "receptionist":
-                            response.sendRedirect(request.getContextPath() + "/receptionist-dashboard");
-                            break;
-                        case "patient":
-                            response.sendRedirect(request.getContextPath() + "/patient-dashboard");
-                            break;
-                        default:
-                            response.sendRedirect(request.getContextPath() + "/login");
-                            // response.sendRedirect(request.getContextPath() + "/profile"); // for testing profile page, disable all cases except default
-                            break;
-                    }
+                    response.sendRedirect(request.getContextPath() + "/dashboard");
 
                 } else {
                     request.setAttribute("errorMessage", "Invalid username or password");

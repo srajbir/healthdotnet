@@ -15,7 +15,7 @@ if (sessionObj == null || sessionObj.getAttribute("user_id") == null) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Your Profile | HealthDotNet</title>
+    <title>HealthDotNet</title>
     <link rel="icon" type="image/svg+xml" href="${pageContext.request.contextPath}/images/favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
@@ -25,8 +25,9 @@ if (sessionObj == null || sessionObj.getAttribute("user_id") == null) {
     <%@ include file="header.jsp" %>
 
     <div class="bar-container">
+        <a href="javascript:history.back()" class="sub-title-logo" style="left: 0;"><img src="${pageContext.request.contextPath}/images/back.svg" alt="back logo"></a>
         <p class="sub-title"><strong>Your Profile</strong></p>
-        <a href="logout" class="logout-link"><img src="${pageContext.request.contextPath}/images/logout.svg" alt="logout logo"></a>
+        <a href="logout" class="sub-title-logo" style="right: 0;"><img src="${pageContext.request.contextPath}/images/logout.svg" alt="logout logo"></a>
     </div>
 
     <form method="post" action="profile">
