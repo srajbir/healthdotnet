@@ -6,7 +6,7 @@ response.setDateHeader("Expires", 0);
 
 HttpSession sessionObj = request.getSession(false);
 if (sessionObj == null || sessionObj.getAttribute("user_id") == null) {
-    response.sendRedirect("login.jsp");
+    response.sendRedirect("/login");
     return;
 }
 
@@ -27,8 +27,7 @@ String role = (String) sessionObj.getAttribute("role");
     <%@ include file="header.jsp" %>
 
     <div class="bar-container">
-        <a href="javascript:history.back()" class="sub-title-logo" style="left: 0;"><img src="${pageContext.request.contextPath}/images/back.svg" alt="back logo"></a>
-        <p class="sub-title"><strong>Dashboard</strong></p>
+        <p><strong>Dashboard</strong></p>
         <a href="logout" class="sub-title-logo" style="right: 0;"><img src="${pageContext.request.contextPath}/images/logout.svg" alt="logout logo"></a>
     </div>
 
@@ -36,9 +35,13 @@ String role = (String) sessionObj.getAttribute("role");
         <a href="profile">Profile</a>
         
         <% if ("admin".equalsIgnoreCase(role)) { %>
-            <a href="manage-users">Manage Users</a>
-            <a href="hospital-settings">Hospital Settings</a>
-            <a href="reports">Reports</a>
+            <a href="manageUsers">Manage Users</a>
+            <a href="reports">Manage Reports</a>
+            <a href="appointments">Manage Appointments</a>
+            <a href="prescription">Manage Prescription</a>
+            <a href="medicine">Manage Medicine</a>
+            <a href="payments">Manage Payments</a>
+            <a href="logs">Logs</a>
         <% } %>
         
         <% if ("doctor".equalsIgnoreCase(role)) { %>

@@ -26,7 +26,7 @@ if (sessionObj == null || sessionObj.getAttribute("user_id") == null) {
 
     <div class="bar-container">
         <a href="javascript:history.back()" class="sub-title-logo" style="left: 0;"><img src="${pageContext.request.contextPath}/images/back.svg" alt="back logo"></a>
-        <p class="sub-title"><strong>Your Profile</strong></p>
+        <p><strong>Your Profile</strong></p>
         <a href="logout" class="sub-title-logo" style="right: 0;"><img src="${pageContext.request.contextPath}/images/logout.svg" alt="logout logo"></a>
     </div>
 
