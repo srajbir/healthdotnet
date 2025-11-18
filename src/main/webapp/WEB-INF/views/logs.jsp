@@ -6,18 +6,13 @@ response.setHeader("Pragma", "no-cache");
 response.setDateHeader("Expires", 0);
 
 HttpSession sessionObj = request.getSession(false);
-
-if (sessionObj == null || sessionObj.getAttribute("user_id") == null) {
-    response.sendRedirect("/login");
-    return;
-}
-
 String SessionRole = (String) sessionObj.getAttribute("role");
 
-if (SessionRole == null || !SessionRole.equalsIgnoreCase("admin")) {
-    response.sendRedirect("/login");
+if (sessionObj == null || sessionObj.getAttribute("user_id") == null || SessionRole == null || !SessionRole.equalsIgnoreCase("admin")) {
+    response.sendRedirect(request.getContextPath() + "/login");
     return;
 }
+
 %>
 
 <!DOCTYPE html>
