@@ -171,8 +171,6 @@ public class ManageUsersServlet extends HttpServlet {
             return;
         }
 
-        int curId = Integer.parseInt(session.getAttribute("user_id").toString());
-
         String action = request.getParameter("action");
 
         if (action == null || action.isEmpty()) {
@@ -181,84 +179,87 @@ public class ManageUsersServlet extends HttpServlet {
         }
 
         if ("delete".equalsIgnoreCase(action)) {
-            handleDelete(request, response, curId);
+            handleDelete(request, response);
             return;
         }
 
         if ("add".equalsIgnoreCase(action) || "update".equalsIgnoreCase(action)) {
-            handleAddOrUpdate(request, response, "update".equalsIgnoreCase(action), curId);
+            handleAddOrUpdate(request, response, "update".equalsIgnoreCase(action));
             return;
         }
 
         response.sendRedirect(request.getContextPath() + "/manageUsers");
     }
 
-        // DELETE HANDLER
-        private void handleDelete(HttpServletRequest request, HttpServletResponse response, int cur_user_id) throws IOException {
-        
-            String idStr = request.getParameter("id");
-            if (idStr == null || idStr.isEmpty()) {
-                response.sendRedirect(request.getContextPath() + "/manageUsers?errorMessage=Invalid+user+ID");
-                return;
+
+    // DELETE HANDLER
+    private void handleDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        String idStr = request.getParameter("id");
+        if (idStr == null || idStr.isEmpty()) {
+            response.sendRedirect(request.getContextPath() + "/manageUsers");
+            return;
+        }
+
+        int id;
+        try {
+            id = Integer.parseInt(idStr);
+        } catch (NumberFormatException e) {
+            request.getSession().setAttribute("errorMessage", "Invalid user ID format.");
+            response.sendRedirect(request.getContextPath() + "/manageUsers");
+            return;
+        }
+
+        Connection conn = null;
+        try {
+            conn = DBConnection.getConnection();
+            conn.setAutoCommit(false);
+
+            try (PreparedStatement ps1 = conn.prepareStatement("DELETE FROM doctors WHERE doctor_id = ?")) {
+                ps1.setInt(1, id);
+                ps1.executeUpdate();
             }
-        
-            int id;
-            try {
-                id = Integer.parseInt(idStr);
-            } catch (NumberFormatException e) {
-                response.sendRedirect(request.getContextPath() + "/manageUsers?errorMessage=Invalid+ID+format");
-                return;
+
+            try (PreparedStatement ps2 = conn.prepareStatement("DELETE FROM users WHERE user_id = ?")) {
+                ps2.setInt(1, id);
+                ps2.executeUpdate();
             }
-        
-            Connection conn = null;
-            try {
-                conn = DBConnection.getConnection();
-                conn.setAutoCommit(false);
-            
-                // Delete from doctors
-                try (PreparedStatement ps1 = conn.prepareStatement("DELETE FROM doctors WHERE doctor_id = ?")) {
-                    ps1.setInt(1, id);
-                    ps1.executeUpdate();
-                }
-            
-                // Delete from users
-                int userDeleted;
-                try (PreparedStatement ps2 = conn.prepareStatement("DELETE FROM users WHERE user_id = ?")) {
-                    ps2.setInt(1, id);
-                    userDeleted = ps2.executeUpdate();
-                }
-            
-                if (userDeleted == 0) {
+
+            conn.commit();
+
+            AppLogger.log(conn, id, "User deleted");
+
+            request.getSession().setAttribute("successMessage", "User deleted successfully.");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            if (conn != null) {
+                try {
                     conn.rollback();
-                    response.sendRedirect(request.getContextPath() + "/manageUsers?errorMessage=User+not+found");
-                    return;
+                } catch (SQLException rollbackEx) {
+                    rollbackEx.printStackTrace();
                 }
-            
-                conn.commit();
-            
-                // Log deletion
-                AppLogger.log(conn, cur_user_id, "User deleted '" + id + "'");
-            
-                response.sendRedirect(request.getContextPath() + "/manageUsers?successMessage=User+deleted+successfully");
-            
-            } catch (SQLException e) {
-                e.printStackTrace();
-                if (conn != null) {
-                    try { conn.rollback(); } catch (SQLException rollbackEx) { rollbackEx.printStackTrace(); }
-                }
-                response.sendRedirect(request.getContextPath() + "/manageUsers?errorMessage=Database+error");
-            } catch (Exception e) {
-                e.printStackTrace();
-                response.sendRedirect(request.getContextPath() + "/manageUsers?errorMessage=Unexpected+error");
-            } finally {
-                if (conn != null) {
-                    try { conn.close(); } catch (SQLException closeEx) { closeEx.printStackTrace(); }
+            }
+            request.getSession().setAttribute("errorMessage", "Database error while deleting user.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.getSession().setAttribute("errorMessage", "An unexpected error occurred during deletion.");
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException closeEx) {
+                    closeEx.printStackTrace();
                 }
             }
         }
 
+        response.sendRedirect(request.getContextPath() + "/manageUsers");
+    }
+
+
     // ADD / UPDATE 
-    private void handleAddOrUpdate(HttpServletRequest request, HttpServletResponse response, boolean isUpdate, int cur_user_id)
+    private void handleAddOrUpdate(HttpServletRequest request, HttpServletResponse response, boolean isUpdate)
             throws IOException, ServletException {
 
         // Collect parameters and trim whitespace
@@ -269,7 +270,7 @@ public class ManageUsersServlet extends HttpServlet {
                 id = Integer.valueOf(idStr);
             } catch (NumberFormatException e) {
                 request.setAttribute("errorMessage", "Invalid user ID format.");
-                request.getRequestDispatcher("/WEB-INF/views/manageUsers.jsp?errorMessage=Invalid+user+ID").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/views/manageUsers.jsp").forward(request, response);
                 return;
             }
         }
@@ -329,18 +330,6 @@ public class ManageUsersServlet extends HttpServlet {
             } else if (password.length() < 6) {
                 errors.put("passwordError", "Password must be at least 6 characters.");
                 hasError = true;
-            } else if (!password.matches(".*[A-Z].*")) {
-                request.setAttribute("passwordError", "Password must contain at least one uppercase letter.");
-                hasError = true;
-            } else if (!password.matches(".*[a-z].*")) {
-                request.setAttribute("passwordError", "Password must contain at least one lowercase letter.");
-                hasError = true;
-            } else if (!password.matches(".*\\d.*")) {
-                request.setAttribute("passwordError", "Password must contain at least one digit.");
-                hasError = true;
-            } else if (!password.matches(".*[!@#$%^&*()].*")) {
-                request.setAttribute("passwordError", "Password must contain at least one special character.");
-                hasError = true;
             }
 
             if (confirmPassword.isEmpty()) {
@@ -358,18 +347,6 @@ public class ManageUsersServlet extends HttpServlet {
                     hasError = true;
                 } else if (password.length() < 6) {
                     errors.put("passwordError", "Password must be at least 6 characters.");
-                    hasError = true;
-                } else if (!password.matches(".*[A-Z].*")) {
-                    request.setAttribute("passwordError", "Password must contain at least one uppercase letter.");
-                    hasError = true;
-                } else if (!password.matches(".*[a-z].*")) {
-                    request.setAttribute("passwordError", "Password must contain at least one lowercase letter.");
-                    hasError = true;
-                } else if (!password.matches(".*\\d.*")) {
-                    request.setAttribute("passwordError", "Password must contain at least one digit.");
-                    hasError = true;
-                } else if (!password.matches(".*[!@#$%^&*()].*")) {
-                    request.setAttribute("passwordError", "Password must contain at least one special character.");
                     hasError = true;
                 }
 
@@ -392,7 +369,7 @@ public class ManageUsersServlet extends HttpServlet {
             hasError = true;
         }
 
-        // Validate phone
+        // Validate phone - support Indian format and international
         if (phone.isEmpty()) {
             errors.put("phoneError", "Phone is required.");
             hasError = true;
@@ -401,7 +378,7 @@ public class ManageUsersServlet extends HttpServlet {
             hasError = true;
         }
 
-        // Validate Date of Birth
+        // Validate Date of Birth - REQUIRED
         LocalDate dob = null;
 
         if (dobStr.isEmpty()) {
@@ -584,7 +561,7 @@ public class ManageUsersServlet extends HttpServlet {
                     ps.executeUpdate();
                 }
 
-                AppLogger.log(conn, cur_user_id, "Profile updated '" + id + "'");
+                AppLogger.log(conn, id, "Profile updated");
 
                 // UPDATE DOCTOR TABLE
                 if ("doctor".equalsIgnoreCase(role)) {
@@ -621,7 +598,7 @@ public class ManageUsersServlet extends HttpServlet {
 
                 conn.commit();
                 request.getSession().setAttribute("successMessage", "User updated successfully.");
-                response.sendRedirect(request.getContextPath() + "/manageUsers?successMessage=User+updated+successfully");
+                response.sendRedirect(request.getContextPath() + "/manageUsers");
                 return;
             }
 
@@ -654,7 +631,7 @@ public class ManageUsersServlet extends HttpServlet {
                 }
             }
 
-            AppLogger.log(conn, cur_user_id, "User added '" + newId+ "'");
+            AppLogger.log(conn, newId, "User added");
 
             // INSERT DOCTOR
             if ("doctor".equalsIgnoreCase(role)) {
@@ -671,19 +648,19 @@ public class ManageUsersServlet extends HttpServlet {
 
             conn.commit();
             request.getSession().setAttribute("successMessage", "User added successfully.");
-            response.sendRedirect(request.getContextPath() + "/manageUsers?successMessage=User+added+successfully");
+            response.sendRedirect(request.getContextPath() + "/manageUsers");
 
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", "Database error while saving user: " + e.getMessage());
             request.setAttribute("showPanel", isUpdate ? "edit" : "add");
-            response.sendRedirect(request.getContextPath() + "/WEB-INF/views/manageUsers.jsp?errorMessage=Database+error");
+            request.getRequestDispatcher("/WEB-INF/views/manageUsers.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", "An unexpected error occurred while saving user.");
             request.setAttribute("showPanel", isUpdate ? "edit" : "add");
             try {
-                response.sendRedirect(request.getContextPath() + "manageUsers.jsp?errorMessage=Unexpected+error");
+                request.getRequestDispatcher("/WEB-INF/views/manageUsers.jsp").forward(request, response);
             } catch (IOException ioEx) {
                 ioEx.printStackTrace();
             }

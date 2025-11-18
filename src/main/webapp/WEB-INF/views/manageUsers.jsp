@@ -6,13 +6,18 @@ response.setHeader("Pragma", "no-cache");
 response.setDateHeader("Expires", 0);
 
 HttpSession sessionObj = request.getSession(false);
-String SessionRole = (String) sessionObj.getAttribute("role");
 
-if (sessionObj == null || sessionObj.getAttribute("user_id") == null || SessionRole == null || !SessionRole.equalsIgnoreCase("admin")) {
-    response.sendRedirect(request.getContextPath() + "/login");
+if (sessionObj == null || sessionObj.getAttribute("user_id") == null) {
+    response.sendRedirect("/login");
     return;
 }
 
+String SessionRole = (String) sessionObj.getAttribute("role");
+
+if (SessionRole == null || !SessionRole.equalsIgnoreCase("admin")) {
+    response.sendRedirect("/login");
+    return;
+}
 %>
 
 
@@ -244,7 +249,6 @@ if (sessionObj == null || sessionObj.getAttribute("user_id") == null || SessionR
 
         .btn-secondary:hover {
             background: #f5f5f5;
-            color: #004d40;
         }
 
         .btn-danger {
@@ -562,6 +566,13 @@ if (sessionObj == null || sessionObj.getAttribute("user_id") == null || SessionR
             color: #999;
         }
 
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .form-row {
@@ -712,24 +723,31 @@ if (sessionObj == null || sessionObj.getAttribute("user_id") == null || SessionR
             <a href="logout" class="sub-title-logo" style="right: 0;"><img src="${pageContext.request.contextPath}/images/logout.svg" alt="logout logo"></a>
         </div>
 
-        <!-- Server messages (success / error) -->
+        <!-- Messages -->
         <%
-            String successMessage = request.getParameter("successMessage") != null ? request.getParameter("successMessage") : (String) request.getAttribute("successMessage");
-            String errorMessage = request.getParameter("errorMessage") != null ? request.getParameter("errorMessage") : (String) request.getAttribute("errorMessage");
+            String successMessage = (String) request.getAttribute("successMessage");
+            String errorMessage = (String) request.getAttribute("errorMessage");
+            
             if (successMessage != null && !successMessage.isEmpty()) {
         %>
-            <div class="alert alert-success" role="alert">
-                <span><%= successMessage %></span>
-                <span class="alert-close" onclick="this.parentElement.style.display='none'">&times;</span>
-            </div>
-        <% } %>
+        <div class="alert alert-success">
+            <span>✓ <%= successMessage %></span>
+            <span class="alert-close" onclick="this.parentElement.style.display='none';">&times;</span>
+        </div>
+        <%
+            }
+        %>
 
-        <% if (errorMessage != null && !errorMessage.isEmpty()) { %>
-            <div class="alert alert-error" role="alert">
-                <span><%= errorMessage %></span>
-                <span class="alert-close" onclick="this.parentElement.style.display='none'">&times;</span>
-            </div>
-        <% } %>
+        <%
+            if (errorMessage != null && !errorMessage.isEmpty()) {
+        %>
+        <div class="alert alert-error">
+            <span>✗ <%= errorMessage %></span>
+            <span class="alert-close" onclick="this.parentElement.style.display='none';">&times;</span>
+        </div>
+        <%
+            }
+        %>
 
         <!-- Tabs -->
         <div class="tabs-container">
