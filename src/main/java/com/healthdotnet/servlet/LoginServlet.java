@@ -2,6 +2,8 @@ package com.healthdotnet.servlet;
 
 import java.io.IOException;
 import java.sql.*;
+
+import com.healthdotnet.util.AppLogger;
 import com.healthdotnet.util.DBConnection;
 
 import javax.servlet.ServletException;
@@ -68,9 +70,12 @@ public class LoginServlet extends HttpServlet {
                     newSession.setAttribute("role", role);
                     newSession.setMaxInactiveInterval(60 * 60); // 60 mins
 
+                    AppLogger.log(conn, Integer.parseInt(userId), "Login successful");
+
                     response.sendRedirect(request.getContextPath() + "/dashboard");
 
                 } else {
+                    AppLogger.log(conn, 0, "Login failed: Invalid credentials for username '" + username + "'");
                     request.setAttribute("errorMessage", "Invalid username or password");
                     request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
                 }

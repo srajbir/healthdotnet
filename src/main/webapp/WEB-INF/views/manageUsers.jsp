@@ -455,7 +455,7 @@ if (SessionRole == null || !SessionRole.equalsIgnoreCase("admin")) {
             gap: 2px;
             border: solid 1px #00796b3a;
             border-radius: 7px;
-            padding: 2px;  
+            padding: 2px; 
         }
         .search-box:focus-within {
             box-shadow: 0 0 0 3px rgba(0, 121, 107, 0.1);
@@ -465,9 +465,8 @@ if (SessionRole == null || !SessionRole.equalsIgnoreCase("admin")) {
         .search-input {
             flex: 1;
             border: none;
-            padding: 10px 12px;
+            padding: 10px 5px;
             font-size: 16px;
-            border-radius: 5px;
             outline: none;
             color: #00796b;
         }
@@ -490,7 +489,6 @@ if (SessionRole == null || !SessionRole.equalsIgnoreCase("admin")) {
         }
 
         .search-reset {
-            align-self: center;
             color: #00796b;
             text-decoration: none;
             font-size: 14px;
@@ -612,6 +610,84 @@ if (SessionRole == null || !SessionRole.equalsIgnoreCase("admin")) {
             .user-card-actions .btn {
                 width: 100%;
             }
+
+            th, td {
+                padding: 10px 8px;
+                font-size: 13px;
+                white-space: nowrap;
+            }
+        }
+
+        @media (max-width: 1200px) {
+
+            .container {
+                width: 100%;
+                padding: 2px;
+                margin: 2px;
+            }
+
+        
+        }
+
+
+
+        /* Phones (≤ 600px) */
+        @media (max-width: 600px) {
+        
+            /* Make table scroll smooth on mobile */
+            .table-container {
+                overflow-x: scroll;
+                -webkit-overflow-scrolling: touch;
+                max-height: 400px;
+            }
+        
+            thead th {
+                font-size: 12px;
+                padding: 10px 6px;
+            }
+        
+            td {
+                font-size: 12px;
+                padding: 10px 6px;
+            }
+        
+            .badge {
+                padding: 3px 8px;
+                font-size: 10px;
+            }
+        }
+
+        /* Extra small screens (≤ 420px) */
+        @media (max-width: 420px) {
+        
+            th .th-content span {
+                font-size: 11px;
+            }
+        
+            .sort-icons span {
+                font-size: 8px;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-input {
+                padding: 12px;
+                font-size: 13px;
+            }
+            .search-submit {
+                border-radius: 0 0 5px 5px;
+            }
+        
+            td {
+                font-size: 11px;
+            }
+        
+            .badge {
+                font-size: 9px;
+                padding: 3px 6px;
+            }
         }
 
         /* Doctor Fields */
@@ -638,7 +714,7 @@ if (SessionRole == null || !SessionRole.equalsIgnoreCase("admin")) {
 </head>
 <body>
 	
-	<div class="container" style="margin-top: 30px; margin-bottom: 30px;">
+	<div class="container">
 		<%@ include file="header.jsp" %>
 
         <div class="bar-container">

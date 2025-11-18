@@ -25,7 +25,7 @@ if (sessionObj == null || sessionObj.getAttribute("user_id") == null) {
     <%@ include file="header.jsp" %>
 
     <div class="bar-container">
-        <a href="javascript:history.back()" class="sub-title-logo" style="left: 0;"><img src="${pageContext.request.contextPath}/images/back.svg" alt="back logo"></a>
+        <a href="dashboard" class="sub-title-logo" style="left: 0;"><img src="${pageContext.request.contextPath}/images/back.svg" alt="back logo"></a>
         <p><strong>Your Profile</strong></p>
         <a href="logout" class="sub-title-logo" style="right: 0;"><img src="${pageContext.request.contextPath}/images/logout.svg" alt="logout logo"></a>
     </div>

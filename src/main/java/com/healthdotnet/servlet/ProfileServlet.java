@@ -6,6 +6,7 @@ import java.sql.*;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 
+import com.healthdotnet.util.AppLogger;
 import com.healthdotnet.util.DBConnection;
 
 import javax.servlet.ServletException;
@@ -291,6 +292,8 @@ public class ProfileServlet extends HttpServlet {
                     ps.executeUpdate();
                 }
             }
+
+            AppLogger.log(conn, userId, "Profile updated");
 
             conn.commit();
             request.setAttribute("successMessage", "Profile updated successfully!");

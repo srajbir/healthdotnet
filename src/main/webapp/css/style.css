@@ -234,6 +234,11 @@ hr {
     transform: translateX(5px);
 }
 
+.dashboard-nav a.completed {
+    border-left: 6px solid #e0f5f2;
+}
+
+
 @keyframes spin {
     from {
         transform: rotate(0deg);
@@ -244,14 +249,9 @@ hr {
 }
 
 @media (max-width: 550px) {
-    body {
-        padding: 20px;
-    }
 
     .container {
-        width: 90%;
-        padding: 25px 20px;
-        border-radius: 10px;
+        width: 95%;
     }
 
     .title {

@@ -32,22 +32,21 @@ String role = (String) sessionObj.getAttribute("role");
     </div>
 
     <nav class="dashboard-nav">
-        <a href="profile">Profile</a>
+        <a href="profile" class="completed">Profile</a>
         
         <% if ("admin".equalsIgnoreCase(role)) { %>
-            <a href="manageUsers">Manage Users</a>
+            <a href="manageUsers" class="completed">Manage Users</a>
             <a href="reports">Manage Reports</a>
             <a href="appointments">Manage Appointments</a>
             <a href="prescription">Manage Prescription</a>
             <a href="medicine">Manage Medicine</a>
             <a href="payments">Manage Payments</a>
-            <a href="logs">Logs</a>
+            <a href="logs" class="completed">Logs</a>
         <% } %>
         
         <% if ("doctor".equalsIgnoreCase(role)) { %>
-            <a href="appointments">Appointments</a>
+            <a href="appointments">My Appointments</a>
             <a href="patients">My Patients</a>
-            <a href="schedule">My Schedule</a>
         <% } %>
         
         <% if ("receptionist".equalsIgnoreCase(role)) { %>
@@ -60,6 +59,8 @@ String role = (String) sessionObj.getAttribute("role");
             <a href="appointments">My Appointments</a>
             <a href="doctors">Find Doctors</a>
             <a href="reports">My Reports</a>
+            <a href="prescription">My Prescription</a>
+            <a href="payments">Payments</a>
         <% } %>
     </nav>
 

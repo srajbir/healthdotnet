@@ -8,6 +8,8 @@ import java.time.DateTimeException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
+
+import com.healthdotnet.util.AppLogger;
 import com.healthdotnet.util.DBConnection;
 import com.healthdotnet.model.Users;
 
@@ -227,6 +229,8 @@ public class RegisterServlet extends HttpServlet {
                 ps.setDate(9, Date.valueOf(newUser.getCreatedAt()));
                 ps.executeUpdate();
             }
+
+            AppLogger.log(conn, 0, "Registration successful for username: '" + newUser.getUsername() + "'");
 
             // Set success message in session
             HttpSession session = request.getSession();

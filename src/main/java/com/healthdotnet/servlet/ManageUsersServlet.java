@@ -1,5 +1,6 @@
 package com.healthdotnet.servlet;
 
+import com.healthdotnet.util.AppLogger;
 import com.healthdotnet.util.DBConnection;
 
 import javax.servlet.ServletException;
@@ -225,6 +226,9 @@ public class ManageUsersServlet extends HttpServlet {
             }
 
             conn.commit();
+
+            AppLogger.log(conn, id, "User deleted");
+
             request.getSession().setAttribute("successMessage", "User deleted successfully.");
 
         } catch (SQLException e) {
@@ -557,6 +561,8 @@ public class ManageUsersServlet extends HttpServlet {
                     ps.executeUpdate();
                 }
 
+                AppLogger.log(conn, id, "Profile updated");
+
                 // UPDATE DOCTOR TABLE
                 if ("doctor".equalsIgnoreCase(role)) {
 
@@ -624,6 +630,8 @@ public class ManageUsersServlet extends HttpServlet {
                     newId = keys.getInt(1);
                 }
             }
+
+            AppLogger.log(conn, newId, "User added");
 
             // INSERT DOCTOR
             if ("doctor".equalsIgnoreCase(role)) {

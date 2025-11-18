@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import com.healthdotnet.util.AppLogger;
 import com.healthdotnet.util.DBConnection;
 
 @WebServlet("/forgot-username")
@@ -53,6 +55,9 @@ public class ForgotUsernameServlet extends HttpServlet {
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         String username = rs.getString("username");
+                        int userId = rs.getInt("user_id");
+
+                        AppLogger.log(conn, userId, "Requested username via Forgot Username");
 
                         HttpSession session = request.getSession();
                         session.setAttribute("successMessage", "Username fetched successfully!");

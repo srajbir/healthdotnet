@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.healthdotnet.util.AppLogger;
 import com.healthdotnet.util.DBConnection;
 @WebServlet("/forgot-password")
 public class ForgotPasswordServlet extends HttpServlet {
@@ -56,6 +57,8 @@ public class ForgotPasswordServlet extends HttpServlet {
 
         try (Connection conn = DBConnection.getConnection()) {
 
+            int userId = 0;
+
             try (PreparedStatement ps = conn.prepareStatement("SELECT user_id FROM users WHERE username=? AND full_name=? AND email=? AND phone=? AND date_of_birth=?")) {
                 ps.setString(1, username);
                 ps.setString(2, fullname);
@@ -64,6 +67,8 @@ public class ForgotPasswordServlet extends HttpServlet {
                 ps.setString(5, dob);
                 try (ResultSet rs = ps.executeQuery()) {
                     if (!rs.next()) {
+                        userId = rs.getInt("user_id");
+                    } else {
                         request.setAttribute("username", username);
                         request.setAttribute("fullname", fullname);
                         request.setAttribute("email", email);
@@ -77,56 +82,58 @@ public class ForgotPasswordServlet extends HttpServlet {
                 }
             }
 
-        Boolean hasError = false;
+            Boolean hasError = false;
 
-        if (password == null || password.trim().isEmpty()) {
-            request.setAttribute("passwordError", "Password is required.");
-            hasError = true;
-        } else if (password.length() < 6) {
-            request.setAttribute("passwordError", "Password must be at least 6 characters.");
-            hasError = true;
-        } else if (!password.matches(".*[A-Z].*")) {
-            request.setAttribute("passwordError", "Password must contain at least one uppercase letter.");
-            hasError = true;
-        } else if (!password.matches(".*[a-z].*")) {
-            request.setAttribute("passwordError", "Password must contain at least one lowercase letter.");
-            hasError = true;
-        } else if (!password.matches(".*\\d.*")) {
-            request.setAttribute("passwordError", "Password must contain at least one digit.");
-            hasError = true;
-        } else if (!password.matches(".*[!@#$%^&*()].*")) {
-            request.setAttribute("passwordError", "Password must contain at least one special character.");
-            hasError = true;
-        }
+            if (password == null || password.trim().isEmpty()) {
+                request.setAttribute("passwordError", "Password is required.");
+                hasError = true;
+            } else if (password.length() < 6) {
+                request.setAttribute("passwordError", "Password must be at least 6 characters.");
+                hasError = true;
+            } else if (!password.matches(".*[A-Z].*")) {
+                request.setAttribute("passwordError", "Password must contain at least one uppercase letter.");
+                hasError = true;
+            } else if (!password.matches(".*[a-z].*")) {
+                request.setAttribute("passwordError", "Password must contain at least one lowercase letter.");
+                hasError = true;
+            } else if (!password.matches(".*\\d.*")) {
+                request.setAttribute("passwordError", "Password must contain at least one digit.");
+                hasError = true;
+            } else if (!password.matches(".*[!@#$%^&*()].*")) {
+                request.setAttribute("passwordError", "Password must contain at least one special character.");
+                hasError = true;
+            }
 
-        if (confirmPassword == null || confirmPassword.trim().isEmpty()) {
-            request.setAttribute("confirmPasswordError", "Confirm password is required.");
-            hasError = true;
-        } else if (!password.equals(confirmPassword)) {
-            request.setAttribute("confirmPasswordError", "Passwords do not match.");
-            hasError = true;
-        }
+            if (confirmPassword == null || confirmPassword.trim().isEmpty()) {
+                request.setAttribute("confirmPasswordError", "Confirm password is required.");
+                hasError = true;
+            } else if (!password.equals(confirmPassword)) {
+                request.setAttribute("confirmPasswordError", "Passwords do not match.");
+                hasError = true;
+            }
 
-        if (hasError) {
-            request.setAttribute("username", username);
-            request.setAttribute("fullname", fullname);
-            request.setAttribute("email", email);
-            request.setAttribute("contact", phoneNumber);
-            request.setAttribute("dateOfBirth", dob);
-            request.getRequestDispatcher("/WEB-INF/views/forgotPassword.jsp").forward(request, response);
-            return;
-        }
+            if (hasError) {
+                request.setAttribute("username", username);
+                request.setAttribute("fullname", fullname);
+                request.setAttribute("email", email);
+                request.setAttribute("contact", phoneNumber);
+                request.setAttribute("dateOfBirth", dob);
+                request.getRequestDispatcher("/WEB-INF/views/forgotPassword.jsp").forward(request, response);
+                return;
+            }
 
-        try (PreparedStatement ps = conn.prepareStatement("UPDATE users SET password=? WHERE username=? AND email=?")) {
-            ps.setString(1, confirmPassword);
-            ps.setString(2, username);
-            ps.setString(3, email);
-            ps.executeUpdate();
-        };
+            try (PreparedStatement ps = conn.prepareStatement("UPDATE users SET password=? WHERE username=? AND email=?")) {
+                ps.setString(1, confirmPassword);
+                ps.setString(2, username);
+                ps.setString(3, email);
+                ps.executeUpdate();
+            };
 
-        HttpSession session = request.getSession();
-        session.setAttribute("successMessage", "Password reset successful.");
-        response.sendRedirect(request.getContextPath() + "/login");
+            AppLogger.log(conn, userId, "Password reset for user: '" + username + "'");
+
+            HttpSession session = request.getSession();
+            session.setAttribute("successMessage", "Password reset successful.");
+            response.sendRedirect(request.getContextPath() + "/login");
 
         } catch (SQLException e) {
             request.setAttribute("username", username);
