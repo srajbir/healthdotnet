@@ -6,7 +6,7 @@ response.setDateHeader("Expires", 0);
 
 HttpSession sessionObj = request.getSession(false);
 if (sessionObj == null || sessionObj.getAttribute("user_id") == null) {
-    response.sendRedirect("/login");
+    response.sendRedirect(request.getContextPath() + "/login");
     return;
 }
 
@@ -39,7 +39,7 @@ String role = (String) sessionObj.getAttribute("role");
             <a href="reports">Manage Reports</a>
             <a href="appointments">Manage Appointments</a>
             <a href="prescription">Manage Prescription</a>
-            <a href="medicine">Manage Medicine</a>
+            <a href="manageMedicines" class="completed">Manage Medicine</a>
             <a href="payments">Manage Payments</a>
             <a href="logs" class="completed">Logs</a>
         <% } %>

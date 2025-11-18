@@ -6,7 +6,7 @@ response.setDateHeader("Expires", 0);
 
 HttpSession sessionObj = request.getSession(false);
 if (sessionObj == null || sessionObj.getAttribute("user_id") == null) {
-    response.sendRedirect("login.jsp");
+    response.sendRedirect(request.getContextPath() + "login.jsp");
     return;
 }
 %>
