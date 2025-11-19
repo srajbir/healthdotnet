@@ -727,7 +727,7 @@ if (!"admin".equalsIgnoreCase(SessionRole)) {
         <%@ include file="footer.jsp" %>
     </div>
 
-    <!-- Delete Modal (Option B) -->
+    <!-- Delete Modal) -->
     <div id="deleteModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
         <div class="modal-content" role="document">
             <div class="modal-header">Confirm Delete</div>

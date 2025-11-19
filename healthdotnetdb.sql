@@ -34,7 +34,7 @@ CREATE TABLE appointments (
     doctor_id INT,
     speciality_required VARCHAR(100) NOT NULL,
     appointment_date DATETIME NOT NULL,
-    status ENUM('scheduled','completed','cancelled','no_show') DEFAULT 'scheduled',
+    status ENUM('waiting','scheduled','completed','cancelled','no_show') DEFAULT 'waiting',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (patient_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (doctor_id) REFERENCES users(user_id) ON DELETE SET NULL

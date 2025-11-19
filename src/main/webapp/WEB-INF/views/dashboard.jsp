@@ -56,8 +56,7 @@ String role = (String) sessionObj.getAttribute("role");
         <% } %>
         
         <% if ("patient".equalsIgnoreCase(role)) { %>
-            <a href="appointments">My Appointments</a>
-            <a href="doctors">Find Doctors</a>
+            <a href="bookAppointment" class="completed">Appointments</a>
             <a href="reports">My Reports</a>
             <a href="prescription">My Prescription</a>
             <a href="payments">Payments</a>
