@@ -50,8 +50,7 @@ String role = (String) sessionObj.getAttribute("role");
         <% } %>
         
         <% if ("receptionist".equalsIgnoreCase(role)) { %>
-            <a href="appointments">Manage Appointments</a>
-            <a href="patients">Patient Records</a>
+            <a href="scheduleAppointment" class="completed">Manage Appointments</a>
             <a href="billing">Billing & Payments</a>
         <% } %>
         

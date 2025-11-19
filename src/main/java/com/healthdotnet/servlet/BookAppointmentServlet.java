@@ -1,6 +1,7 @@
 package com.healthdotnet.servlet;
 
 import com.healthdotnet.util.DBConnection;
+import com.healthdotnet.util.AppLogger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
@@ -67,6 +68,16 @@ public class BookAppointmentServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
 
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("role") == null) {
+            res.sendRedirect(req.getContextPath() + "/login");
+            return;
+        }
+        if (!"patient".equals(session.getAttribute("role").toString())) {
+            res.sendRedirect(req.getContextPath() + "/login");
+            return;
+        }
+
         String action = req.getParameter("action");
 
         if ("cancel".equals(action)) {
@@ -107,6 +118,8 @@ public class BookAppointmentServlet extends HttpServlet {
             ps.setString(3, date);
             ps.executeUpdate();
 
+            AppLogger.log(con, userId, "Created new appointment");
+
             res.sendRedirect(req.getContextPath() + "/bookAppointment?successMessage=Appointment+requested+successfully");
 
         } catch (Exception e) {
@@ -143,7 +156,12 @@ public class BookAppointmentServlet extends HttpServlet {
             );
             ps.setInt(1, Integer.parseInt(appointmentId));
             ps.setInt(2, userId);
-            ps.executeUpdate();
+
+            int updated = ps.executeUpdate();
+
+            if (updated > 0) {
+                AppLogger.log(con, userId, "Cancelled appointment ID: " + appointmentId);
+            }
 
             res.sendRedirect(req.getContextPath() + "/bookAppointment?successMessage=Appointment+cancelled");
 
