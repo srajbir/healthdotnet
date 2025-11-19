@@ -11,6 +11,9 @@ if (sessionObj == null || sessionObj.getAttribute("user_id") == null) {
 }
 
 String role = (String) sessionObj.getAttribute("role");
+if (role != null && !role.isEmpty()) {
+    role = role.substring(0, 1).toUpperCase() + role.substring(1);
+}
 %>
 
 <!DOCTYPE html>
@@ -27,7 +30,7 @@ String role = (String) sessionObj.getAttribute("role");
     <%@ include file="header.jsp" %>
 
     <div class="bar-container">
-        <p><strong>Dashboard</strong></p>
+        <p><strong><%= role %> Dashboard</strong></p>
         <a href="logout" class="sub-title-logo" style="right: 0;"><img src="${pageContext.request.contextPath}/images/logout.svg" alt="logout logo"></a>
     </div>
 
