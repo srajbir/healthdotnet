@@ -218,7 +218,7 @@ public class RegisterServlet extends HttpServlet {
                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setString(1, newUser.getRole().name());
+                ps.setString(1, newUser.getRole().name().toLowerCase());
                 ps.setString(2, newUser.getFullName());
                 ps.setString(3, newUser.getUsername());
                 ps.setString(4, newUser.getPassword());
@@ -240,7 +240,14 @@ public class RegisterServlet extends HttpServlet {
             return;
 
         } catch (SQLException e) {
-            request.setAttribute("dbError", "An error occurred while processing your registration. Please try again later.");
+            // Log stack trace so Tomcat console/logs show the root cause
+            e.printStackTrace();
+
+            // For debugging: show SQL error details on the registration page.
+            // NOTE: Remove or sanitize this before production to avoid leaking DB info.
+            String dbMessage = "Database error: " + e.getMessage()
+                    + " (SQLState=" + e.getSQLState() + ", ErrorCode=" + e.getErrorCode() + ")";
+            request.setAttribute("dbError", dbMessage);
             request.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(request, response);
             return;
         }
